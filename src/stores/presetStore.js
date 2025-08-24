@@ -392,7 +392,7 @@ export const usePresetStore = defineStore('preset', {
         trimmedNewName.includes(' ') ||
         (this.variables[trimmedNewName] && trimmedNewName !== oldName)
       ) {
-        window.alert('Invalid or conflicting new variable name.');
+        window.alert('无效或冲突的新变量名称。');
         return false;
       }
 
@@ -420,8 +420,8 @@ export const usePresetStore = defineStore('preset', {
       const newPrompt = {
         id: newId,
         identifier: newId,
-        name: 'New Untitled Prompt',
-        content: '{{// This is a new prompt. Add your content here.}}',
+        name: '新建未命名提示词',
+        content: '{{// 这是一个新的提示词。在此处添加你的内容。}}',
         enabled: true, // Start enabled to be part of analysis
         role: 'system',
         system_prompt: false,
@@ -444,7 +444,7 @@ export const usePresetStore = defineStore('preset', {
       if (this.selectedLibraryPrompts.size === 0) return;
       if (
         window.confirm(
-          `Are you sure you want to permanently delete ${this.selectedLibraryPrompts.size} selected prompt(s)?`,
+          `你确定要永久删除 ${this.selectedLibraryPrompts.size} 个选中的提示词吗？`,
         )
       ) {
         this.selectedLibraryPrompts.forEach((promptId) => {

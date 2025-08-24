@@ -7,18 +7,18 @@ import { ArrowUpTrayIcon, ClipboardDocumentIcon, CheckIcon } from '@heroicons/vu
 const store = usePresetStore();
 
 const finalJson = computed(() => store.finalJson);
-const copyButtonText = ref('Copy to Clipboard');
+const copyButtonText = ref('复制到剪贴板');
 
 async function copyToClipboard() {
   try {
     await navigator.clipboard.writeText(finalJson.value);
-    copyButtonText.value = 'Copied!';
+    copyButtonText.value = '已复制!';
     window.setTimeout(() => {
-      copyButtonText.value = 'Copy to Clipboard';
+      copyButtonText.value = '复制到剪贴板';
     }, 2000);
   } catch (err) {
     console.error('Failed to copy: ', err);
-    copyButtonText.value = 'Failed to copy';
+    copyButtonText.value = '复制失败';
   }
 }
 </script>
@@ -57,11 +57,11 @@ async function copyToClipboard() {
                 class="flex items-center text-lg leading-6 font-medium text-gray-900"
               >
                 <ArrowUpTrayIcon class="mr-2 h-6 w-6 text-green-600" />
-                Export to JSON
+                导出到 JSON
               </DialogTitle>
               <div class="mt-2">
                 <p class="text-sm text-gray-500">
-                  The generated JSON below reflects all your changes. Use the button to copy it.
+                  下方生成的 JSON 反映了你的所有更改。使用按钮将其复制到剪贴板。
                 </p>
               </div>
 
@@ -79,7 +79,7 @@ async function copyToClipboard() {
                   class="inline-flex justify-center rounded-md border border-transparent bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2"
                   @click="store.closeExportModal"
                 >
-                  Close
+                  关闭
                 </button>
                 <button
                   type="button"
@@ -87,7 +87,7 @@ async function copyToClipboard() {
                   @click="copyToClipboard"
                 >
                   <ClipboardDocumentIcon
-                    v-if="copyButtonText === 'Copy to Clipboard'"
+                    v-if="copyButtonText === '复制到剪贴板'"
                     class="mr-2 h-5 w-5"
                   />
                   <CheckIcon v-else class="mr-2 h-5 w-5" />

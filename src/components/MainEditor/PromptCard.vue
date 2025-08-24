@@ -24,7 +24,7 @@
             >
               <component :is="RoleIcon" class="h-5 w-5" aria-hidden="true" />
             </MenuButton>
-            <template #popper>Role: {{ currentRole }}</template>
+            <template #popper>角色: {{ currentRole }}</template>
           </v-tooltip>
 
           <transition
@@ -48,7 +48,7 @@
                     @click.stop="setRole('system')"
                   >
                     <Cog6ToothIcon class="mr-2 h-5 w-5" />
-                    System
+                    系统
                   </button>
                 </MenuItem>
                 <MenuItem v-slot="{ active }">
@@ -60,7 +60,7 @@
                     @click.stop="setRole('user')"
                   >
                     <UserIcon class="mr-2 h-5 w-5" />
-                    User
+                    用户
                   </button>
                 </MenuItem>
                 <MenuItem v-slot="{ active }">
@@ -72,7 +72,7 @@
                     @click.stop="setRole('assistant')"
                   >
                     <ChatBubbleOvalLeftIcon class="mr-2 h-5 w-5" />
-                    Assistant
+                    助手
                   </button>
                 </MenuItem>
               </div>
@@ -122,7 +122,7 @@
                     @click.stop="store.movePromptTop(prompt.id)"
                   >
                     <ArrowUpCircleIcon class="mr-2 h-5 w-5 text-blue-400" />
-                    Move to Top
+                    移到顶部
                   </button>
                 </MenuItem>
                 <MenuItem v-slot="{ active }">
@@ -134,7 +134,7 @@
                     @click.stop="store.movePromptBottom(prompt.id)"
                   >
                     <ArrowDownCircleIcon class="mr-2 h-5 w-5 text-blue-400" />
-                    Move to Bottom
+                    移到底部
                   </button>
                 </MenuItem>
               </div>
@@ -148,7 +148,7 @@
                     @click.stop="store.duplicatePrompt(prompt.id)"
                   >
                     <DocumentDuplicateIcon class="mr-2 h-5 w-5 text-green-400" />
-                    Duplicate
+                    复制
                   </button>
                 </MenuItem>
                 <MenuItem v-slot="{ active }">
@@ -160,7 +160,7 @@
                     @click.stop="hidePrompt"
                   >
                     <EyeSlashIcon class="mr-2 h-5 w-5 text-yellow-400" aria-hidden="true" />
-                    Hide
+                    隐藏
                   </button>
                 </MenuItem>
               </div>
@@ -184,7 +184,7 @@
                       ]"
                       aria-hidden="true"
                     />
-                    Delete
+                    删除
                   </button>
                 </MenuItem>
               </div>
@@ -246,7 +246,15 @@ const isEnabled = computed({
   },
 });
 
-const currentRole = computed(() => props.prompt.role || 'system');
+const currentRole = computed(() => {
+  const role = props.prompt.role || 'system';
+  const roleMap = {
+    system: '系统',
+    user: '用户',
+    assistant: '助手'
+  };
+  return roleMap[role] || role;
+});
 
 const roleIcons = {
   system: Cog6ToothIcon,
@@ -322,10 +330,10 @@ const hidePrompt = () => {
 
 const removePrompt = () => {
   if (props.prompt.system_prompt) {
-    alert('This is a system prompt and cannot be deleted.');
+    alert('这是一个系统提示词，无法删除。');
     return;
   }
-  if (window.confirm(`Are you sure you want to permanently delete "${props.prompt.name}"?`)) {
+  if (window.confirm(`你确定要永久删除"${props.prompt.name}"吗？`)) {
     store.removePrompt(props.prompt.id);
   }
 };

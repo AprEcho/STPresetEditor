@@ -39,8 +39,8 @@ import { InformationCircleIcon, VariableIcon } from '@heroicons/vue/24/solid';
 const store = usePresetStore();
 
 const tabs = [
-  { name: 'Details', icon: InformationCircleIcon },
-  { name: 'Variables', icon: VariableIcon },
+  { name: '详情', icon: InformationCircleIcon },
+  { name: '变量', icon: VariableIcon },
 ];
 
 const activeTabIndex = computed(() =>

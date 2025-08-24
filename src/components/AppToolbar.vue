@@ -15,7 +15,7 @@ const store = usePresetStore();
 const resetToDefault = () => {
   if (
     window.confirm(
-      'Are you sure you want to reset all data and return to the factory default? This will permanently delete all your changes and cannot be undone.',
+      '你确定要重置所有数据并恢复到出厂默认设置吗？这将永久删除你的所有更改且无法撤销。',
     )
   ) {
     store.resetToFactoryDefault();
@@ -31,36 +31,36 @@ const resetToDefault = () => {
     </button>
 
     <!-- Desktop: Title -->
-    <h1 class="hidden text-xl font-bold text-gray-800 md:block">📝 SillyTavern Preset Editor</h1>
+    <h1 class="hidden text-xl font-bold text-gray-800 md:block">📝 SillyTavern 预设编辑器</h1>
 
     <!-- Mobile: Spacer to center the title -->
     <div class="flex-1 md:hidden"></div>
 
     <!-- Mobile: Centered Title -->
-    <h1 class="absolute left-1/2 -translate-x-1/2 text-lg font-bold md:hidden">📝 STPE</h1>
+    <h1 class="absolute left-1/2 -translate-x-1/2 text-lg font-bold md:hidden">📝 预设编辑器</h1>
 
     <!-- Desktop: Action Buttons -->
     <div class="hidden items-center space-x-3 md:flex">
       <button
         class="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none"
-        @click="store.isImportModalOpen = true"
+        @click="store.openImportModal()"
       >
         <ArrowDownTrayIcon class="mr-2 -ml-1 h-5 w-5" />
-        Import
+        导入
       </button>
       <button
         class="inline-flex items-center rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:outline-none"
         @click="store.isExportModalOpen = true"
       >
         <ArrowUpTrayIcon class="mr-2 -ml-1 h-5 w-5" />
-        Export
+        导出
       </button>
       <button
         class="inline-flex items-center rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none"
         @click="resetToDefault"
       >
         <ArrowPathIcon class="mr-2 -ml-1 h-5 w-5" />
-        Reset
+        重置
       </button>
     </div>
 
@@ -97,7 +97,7 @@ const resetToDefault = () => {
                   <ArrowDownTrayIcon
                     :class="[active ? 'text-blue-100' : 'text-blue-400', 'mr-2 h-5 w-5']"
                   />
-                  Import from JSON
+                  从 JSON 导入
                 </button>
               </MenuItem>
               <MenuItem v-slot="{ active }">
@@ -111,7 +111,7 @@ const resetToDefault = () => {
                   <ArrowUpTrayIcon
                     :class="[active ? 'text-green-100' : 'text-green-400', 'mr-2 h-5 w-5']"
                   />
-                  Export to JSON
+                  导出到 JSON
                 </button>
               </MenuItem>
             </div>
@@ -127,7 +127,7 @@ const resetToDefault = () => {
                   <ArrowPathIcon
                     :class="[active ? 'text-red-100' : 'text-red-400', 'mr-2 h-5 w-5']"
                   />
-                  Reset to Default
+                  重置为默认值
                 </button>
               </MenuItem>
             </div>

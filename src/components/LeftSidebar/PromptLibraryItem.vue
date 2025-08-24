@@ -28,7 +28,7 @@
 
     <div class="ml-2 flex-shrink-0">
       <button
-        :title="isInOrder ? 'Prompt is already in the editor' : 'Add prompt to editor'"
+        :title="isInOrder ? '提示词已在编辑器中' : '将提示词添加到编辑器'"
         class="rounded-full p-1 transition-colors hover:bg-gray-200"
         :disabled="isInOrder"
         @click.stop="addOrNavigate"

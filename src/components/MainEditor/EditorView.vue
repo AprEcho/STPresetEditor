@@ -1,10 +1,10 @@
 <template>
   <div class="flex h-full flex-col">
     <div class="mb-2 flex flex-shrink-0 items-center justify-between">
-      <h2 class="text-lg font-semibold">Editor</h2>
+      <h2 class="text-lg font-semibold">编辑器</h2>
       <SwitchGroup as="div" class="mx-2 flex items-center">
         <SwitchLabel as="span" class="mr-2 text-sm font-medium text-gray-900">
-          {{ isPreviewMode ? 'Preview Mode' : 'Raw Mode' }}
+          {{ isPreviewMode ? '预览模式' : '原始模式' }}
         </SwitchLabel>
         <Switch
           :model-value="isPreviewMode"

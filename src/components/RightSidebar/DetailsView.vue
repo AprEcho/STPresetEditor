@@ -7,7 +7,7 @@
       <PromptDetails :prompt="selectedPrompt" />
     </div>
     <div v-else>
-      <p class="text-gray-500 italic">Select a prompt or a macro to see details here.</p>
+      <p class="text-gray-500 italic">选择一个提示词或宏来查看详细信息。</p>
     </div>
   </div>
 </template>

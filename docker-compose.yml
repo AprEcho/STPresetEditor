@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  # 开发环境
+  dev:
+    build:
+      context: .
+      target: builder
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: npm run dev -- --host 0.0.0.0
+    profiles:
+      - dev
+
+  # 生产环境
+  app:
+    build: .
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    profiles:
+      - prod
+
+  # 仅构建
+  build:
+    build:
+      context: .
+      target: builder
+    volumes:
+      - ./dist:/app/dist
+    command: npm run build
+    profiles:
+      - build 
