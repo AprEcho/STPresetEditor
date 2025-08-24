@@ -14,8 +14,26 @@
         <h3 class="text-base font-bold" :class="{ 'text-gray-500': !isEnabled }">
           {{ prompt.name }}
         </h3>
+        <!-- 收缩状态指示器 -->
+        <span 
+          v-if="isCollapsed" 
+          class="ml-2 inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600"
+        >
+          <ChevronRightIcon class="mr-1 h-3 w-3" />
+          已收缩
+        </span>
       </div>
       <div class="flex items-center space-x-2">
+        <!-- 单个收缩控制按钮 -->
+        <button
+          class="inline-flex items-center rounded-md p-1 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          @click.stop="toggleCollapse"
+          :title="isCollapsed ? '展开内容' : '收缩内容'"
+        >
+          <ChevronUpIcon v-if="!isCollapsed" class="h-4 w-4" />
+          <ChevronDownIcon v-else class="h-4 w-4" />
+        </button>
+
         <Menu as="div" class="relative inline-block text-left">
           <v-tooltip>
             <MenuButton
@@ -193,8 +211,12 @@
         </Menu>
       </div>
     </div>
-    <!-- Text -->
-    <div class="px-8 text-sm whitespace-pre-wrap" :class="{ 'text-gray-600': !isEnabled }">
+    <!-- Text Content -->
+    <div 
+      v-if="!isCollapsed" 
+      class="px-8 text-sm whitespace-pre-wrap transition-all duration-200" 
+      :class="{ 'text-gray-600': !isEnabled }"
+    >
       <template v-for="(part, index) in contentParts" :key="index">
         <MacroRenderer
           v-if="part.isMacro"
@@ -204,6 +226,7 @@
         <span v-else>{{ part.content }}</span>
       </template>
     </div>
+    
   </div>
 </template>
 
@@ -223,6 +246,9 @@ import {
   DocumentDuplicateIcon,
   ArrowUpCircleIcon,
   ArrowDownCircleIcon,
+  ChevronUpIcon,
+  ChevronDownIcon,
+  ChevronRightIcon,
 } from '@heroicons/vue/20/solid';
 
 const props = defineProps({
@@ -246,14 +272,22 @@ const isEnabled = computed({
   },
 });
 
+const isCollapsed = computed(() => store.isPromptCollapsed(props.prompt.id));
+
+// 新增：获取原始英文角色名（用于图标匹配）
+const rawRole = computed(() => {
+  // 从 prompt 中获取角色，默认使用 'system'
+  return props.prompt.role || 'system';
+});
+
+// 修改：基于原始英文角色名获取中文显示名称
 const currentRole = computed(() => {
-  const role = props.prompt.role || 'system';
   const roleMap = {
     system: '系统',
     user: '用户',
     assistant: '助手'
   };
-  return roleMap[role] || role;
+  return roleMap[rawRole.value] || rawRole.value;
 });
 
 const roleIcons = {
@@ -262,7 +296,10 @@ const roleIcons = {
   assistant: ChatBubbleOvalLeftIcon,
 };
 
-const RoleIcon = computed(() => roleIcons[currentRole.value]);
+// 修改：使用原始英文角色名匹配图标
+const RoleIcon = computed(() => {
+  return roleIcons[rawRole.value];
+});
 
 const setRole = (newRole) => {
   store.updatePromptDetail({
@@ -336,5 +373,9 @@ const removePrompt = () => {
   if (window.confirm(`你确定要永久删除"${props.prompt.name}"吗？`)) {
     store.removePrompt(props.prompt.id);
   }
+};
+
+const toggleCollapse = () => {
+  store.togglePromptCollapse(props.prompt.id);
 };
 </script>

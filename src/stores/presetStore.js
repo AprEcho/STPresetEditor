@@ -56,6 +56,10 @@ export const usePresetStore = defineStore('preset', {
 
     // Responsive state
     isMobile: false,
+
+    // Collapse state for prompts
+    promptCollapseStates: {}, // 存储每个提示词的收缩状态
+    globalCollapseState: false, // 全局收缩状态
   }),
   getters: {
     getPromptById: (state) => (id) => {
@@ -542,10 +546,51 @@ export const usePresetStore = defineStore('preset', {
     setIsMobile(isMobile) {
       this.isMobile = isMobile;
     },
+
+    // Collapse state management
+    togglePromptCollapse(promptId) {
+      if (this.promptCollapseStates[promptId] === undefined) {
+        this.promptCollapseStates[promptId] = false;
+      }
+      this.promptCollapseStates[promptId] = !this.promptCollapseStates[promptId];
+    },
+    
+    toggleGlobalCollapse() {
+      this.globalCollapseState = !this.globalCollapseState;
+      
+      // 只对没有单独设置状态的卡片应用全局状态
+      Object.keys(this.prompts).forEach(promptId => {
+        if (this.promptCollapseStates[promptId] === undefined) {
+          this.promptCollapseStates[promptId] = this.globalCollapseState;
+        }
+      });
+    },
+    
+    expandAllPrompts() {
+      this.globalCollapseState = false;
+      Object.keys(this.prompts).forEach(promptId => {
+        this.promptCollapseStates[promptId] = false;
+      });
+    },
+    
+    collapseAllPrompts() {
+      this.globalCollapseState = true;
+      Object.keys(this.prompts).forEach(promptId => {
+        this.promptCollapseStates[promptId] = true;
+      });
+    },
+    
+    isPromptCollapsed(promptId) {
+      // 关键修改：如果卡片有单独设置的状态，优先使用它，否则才使用全局状态
+      if (this.promptCollapseStates[promptId] !== undefined) {
+        return this.promptCollapseStates[promptId];
+      }
+      return this.globalCollapseState;
+    },
   },
   persist: {
     // Only persist the essential user data, not derived/UI states
-    pick: ['rawJson', 'prompts', 'promptOrder', 'macroDisplayMode'],
+    pick: ['rawJson', 'prompts', 'promptOrder', 'macroDisplayMode', 'promptCollapseStates', 'globalCollapseState'],
     beforeHydrate: () => {
       console.log('[Persistence] About to hydrate store from localStorage');
     },
